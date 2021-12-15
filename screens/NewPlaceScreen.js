@@ -7,6 +7,7 @@ import ImageSelector from "../components/ImageSelector";
 
 const NewPlaceScreen = props => {
   const [titleValue, setTitleValue] = useState('')
+  const [selectedImage, setSelectedImage] = useState()
 
   const dispatch = useDispatch();
 
@@ -14,8 +15,13 @@ const NewPlaceScreen = props => {
     setTitleValue(text)
   }
 
+  const imageTakenHandler = imagePath => {
+    setSelectedImage(imagePath)
+  }
+
   const savePlaceHandler = () => {
-    dispatch(placesActions.addPlace(titleValue))
+    dispatch(placesActions.addPlace(titleValue, selectedImage))
+    props.navigation.goBack()
   }
 
   return (
@@ -27,7 +33,7 @@ const NewPlaceScreen = props => {
           onChangeText={titleChangeHandler}
           value={titleValue}
         />
-        <ImageSelector />
+        <ImageSelector onImageTaken={imageTakenHandler} />
         <Button title='Save Place' color={Colors.primary} onPress={savePlaceHandler} />
       </View>
     </ScrollView>
